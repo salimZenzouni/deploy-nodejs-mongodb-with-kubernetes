@@ -48,21 +48,33 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    tags.datadoghq.com/env: development
+    tags.datadoghq.com/service: todo-api
+    tags.datadoghq.com/version: "1.0" 
   name: todo-api
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
+      tags.datadoghq.com/env: development
+      tags.datadoghq.com/service: todo-api
+      tags.datadoghq.com/version: "1.0" 
       app: todo-api
   template:
     metadata:
       labels:
+        tags.datadoghq.com/env: development
+        tags.datadoghq.com/service: todo-api
+        tags.datadoghq.com/version: "1.0" 
+        admission.datadoghq.com/enabled: "true"      
         app: todo-api
+      annotations:
+        admission.datadoghq.com/js-lib.version: "v5.14.1"        
     spec:
       containers:
         - name: todo-api
           image: todo-api
-          imagePullPolicy: Never
           ports:
             - containerPort: 3000
           envFrom:
